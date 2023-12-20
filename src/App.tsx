@@ -1,14 +1,30 @@
 import { useState } from "react";
 import Board from "./components/Board";
 import Square from "./components/Square";
+import calculateWinner from "./utils/calculateWinner";
 
 function App() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState<boolean>(true);
+  const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
 
   function handleClick(i: number) {
+    if (squares[i] || calculateWinner(squares)) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = "x";
+    if (xIsNext) {
+      nextSquares[i] = "x";
+    } else {
+      nextSquares[i] = "0";
+    }
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
+  }
+
+  const winner: string | null = calculateWinner(squares);
+  let status: string;
+  if (winner) {
+    status = `Winner: ${winner}`;
+  } else {
+    status = `Next player: ${xIsNext ? "x" : "o"}`;
   }
 
   return (
@@ -18,22 +34,20 @@ function App() {
           TicTacToe App
         </h1>
 
-        <div className="mt-10 border-collapse flex flex-col gap-y-3">
-          <Board>
-            <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-            <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-            <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-          </Board>
-          <Board>
-            <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-            <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-            <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-          </Board>
-          <Board>
-            <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-            <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-            <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-          </Board>
+        <p className="text-center my-5">{status}</p>
+
+        <div className="border-collapse flex flex-col gap-y-3">
+          {[...Array(3)].map((_row, i) => (
+            <Board key={i}>
+              {[...Array(3)].map((_col, j) => (
+                <Square
+                  key={j}
+                  value={squares[i * 3 + j]}
+                  onSquareClick={() => handleClick(i * 3 + j)}
+                />
+              ))}
+            </Board>
+          ))}
         </div>
       </div>
     </>
