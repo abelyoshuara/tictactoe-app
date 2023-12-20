@@ -8,6 +8,10 @@ export default {
     fontFamily: {
       sans: ["Figtree", "sans-serif"],
     },
+    container: {
+      center: true,
+      padding: "2rem",
+    },
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
