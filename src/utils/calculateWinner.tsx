@@ -1,4 +1,6 @@
-export default function calculateWinner(squares: string[]): null | string {
+export default function calculateWinner(
+  squares: string[] | null[],
+): null | string {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

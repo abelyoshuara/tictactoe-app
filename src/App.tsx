@@ -1,30 +1,23 @@
 import { useState } from "react";
 import Board from "./components/Board";
-import Square from "./components/Square";
-import calculateWinner from "./utils/calculateWinner";
+import History from "./components/History";
 
 function App() {
-  const [xIsNext, setXIsNext] = useState<boolean>(true);
-  const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
+  const [history, setHistory] = useState<(string[] | null[])[]>([
+    Array(9).fill(null),
+  ]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext: boolean = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
 
-  function handleClick(i: number) {
-    if (squares[i] || calculateWinner(squares)) return;
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "x";
-    } else {
-      nextSquares[i] = "0";
-    }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+  function handlePlay(nextSquares: string[] | null[]) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
   }
 
-  const winner: string | null = calculateWinner(squares);
-  let status: string;
-  if (winner) {
-    status = `Winner: ${winner}`;
-  } else {
-    status = `Next player: ${xIsNext ? "x" : "o"}`;
+  function handleJumpTo(nextMove: number) {
+    setCurrentMove(nextMove);
   }
 
   return (
@@ -34,20 +27,15 @@ function App() {
           TicTacToe App
         </h1>
 
-        <p className="text-center my-5">{status}</p>
-
-        <div className="border-collapse flex flex-col gap-y-3">
-          {[...Array(3)].map((_row, i) => (
-            <Board key={i}>
-              {[...Array(3)].map((_col, j) => (
-                <Square
-                  key={j}
-                  value={squares[i * 3 + j]}
-                  onSquareClick={() => handleClick(i * 3 + j)}
-                />
-              ))}
-            </Board>
-          ))}
+        <div className="mt-5">
+          <div className="flex flex-col items-center gap-3">
+            <Board
+              xIsNext={xIsNext}
+              squares={currentSquares}
+              onPlay={handlePlay}
+            />
+          </div>
+          <History moves={history} onJumpTo={handleJumpTo} />
         </div>
       </div>
     </>
