@@ -5,7 +5,7 @@ interface HistoryProps {
 
 export default function History({ moves, onJumpTo }: HistoryProps) {
   return (
-    <ol className="mt-5 mx-auto text-center">
+    <ol className="mx-auto text-center">
       {moves.map((_squares, move) => {
         let description;
 
