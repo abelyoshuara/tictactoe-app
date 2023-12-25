@@ -13,25 +13,25 @@ function App() {
 
   function handlePlay(nextSquares: string[] | null[]) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    localStorage.setItem("history", JSON.stringify(nextHistory));
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
+    localStorage.setItem("history", JSON.stringify(nextHistory));
   }
 
   function handleJumpTo(nextMove: number) {
     setCurrentMove(nextMove);
   }
 
-  function restart() {
+  function clear() {
     localStorage.removeItem("history");
-    setHistory([]);
+    setHistory([Array(9).fill(null)]);
     setCurrentMove(0);
   }
 
   useEffect(() => {
     const savedHistory = JSON.parse(localStorage.getItem("history") || "[]");
     setHistory(savedHistory);
-    setCurrentMove(savedHistory.length - 1);
+    setCurrentMove(savedHistory.length ? savedHistory.length - 1 : 0);
   }, []);
 
   return (
@@ -53,9 +53,9 @@ function App() {
             <button
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={restart}
+              onClick={clear}
             >
-              Restart
+              Clear
             </button>
           </div>
           <History moves={history} onJumpTo={handleJumpTo} />
