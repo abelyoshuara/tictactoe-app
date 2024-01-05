@@ -19,10 +19,10 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
     onPlay(nextSquares);
   }
 
-  const winner: string | null = calculateWinner(squares);
+  const winner: [null | string, number[]] | null = calculateWinner(squares);
   let status: string;
-  if (winner) {
-    status = `Winner: ${winner}`;
+  if (winner !== null && winner[0]) {
+    status = `Winner: ${winner[0]}`;
   } else {
     status = `Next player: ${xIsNext ? "x" : "o"}`;
   }
@@ -32,14 +32,15 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
       <div>
         <p className="text-center">{status}</p>
       </div>
-      <div className="border-collapse flex flex-col gap-y-3">
+      <div className="border-collapse flex flex-col">
         {[...Array(3)].map((_row, i) => (
-          <div key={i}>
+          <div key={i} className="flex">
             {[...Array(3)].map((_col, j) => (
               <Square
                 key={j}
                 value={squares[i * 3 + j]}
                 onSquareClick={() => handleClick(i * 3 + j)}
+                isWinner={winner !== null && winner[1].includes(i * 3 + j)}
               />
             ))}
           </div>
