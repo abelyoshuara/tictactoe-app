@@ -29,7 +29,7 @@ function App() {
   }
 
   useEffect(() => {
-    const savedHistory = JSON.parse(localStorage.getItem("history") || "[]");
+    const savedHistory = JSON.parse(localStorage.getItem("history") || "[[]]");
     setHistory(savedHistory);
     setCurrentMove(savedHistory.length ? savedHistory.length - 1 : 0);
   }, []);
