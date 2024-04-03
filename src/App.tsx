@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Board from "./components/Board";
 import History from "./components/History";
+import { Tictactoe } from "./types/Tictactoe";
 
 function App() {
-  const [tictactoe, setTictactoe] = useState({
+  const [tictactoe, setTictactoe] = useState<Tictactoe>({
     history: [Array(9).fill(null)],
     currentSquares: Array(9).fill(null),
     currentMove: 0,
@@ -12,7 +13,7 @@ function App() {
 
   const xIsNext: boolean = tictactoe.currentMove % 2 === 0;
 
-  function handlePlay(nextSquares: string[] | null[]) {
+  function handlePlay(nextSquares: string[]) {
     const nextHistory = [
       ...tictactoe.history.slice(0, tictactoe.currentMove + 1),
       nextSquares,
