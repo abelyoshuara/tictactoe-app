@@ -19,10 +19,14 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
     onPlay(nextSquares);
   }
 
+  const isNotNull = squares.every((square) => square !== null);
+
   const winner: [null | string, number[]] | null = calculateWinner(squares);
   let status: string;
   if (winner !== null && winner[0]) {
     status = `Winner: ${winner[0]}`;
+  } else if (winner === null && isNotNull) {
+    status = `Draw`;
   } else {
     status = `Next player: ${xIsNext ? "x" : "o"}`;
   }
