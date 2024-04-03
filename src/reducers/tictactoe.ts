@@ -65,6 +65,8 @@ function tictactoeReducer(tictactoe: Tictactoe, action: Action) {
         ...tictactoe,
         history: savedHistory,
         currentMove: savedHistory.length ? savedHistory.length - 1 : 0,
+        currentSquares:
+          savedHistory[savedHistory.length ? savedHistory.length - 1 : 0],
       };
     }
 
