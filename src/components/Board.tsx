@@ -3,8 +3,8 @@ import Square from "./Square";
 
 interface BoardProps {
   xIsNext: boolean;
-  squares: string[] | null[];
-  onPlay: (nextSquares: string[] | null[]) => void;
+  squares: string[];
+  onPlay: (nextSquares: string[]) => void;
 }
 
 export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
@@ -21,7 +21,7 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
 
   const isNotNull = squares.every((square) => square !== null);
 
-  const winner: [null | string, number[]] | null = calculateWinner(squares);
+  const winner: [string, number[]] | null = calculateWinner(squares);
   let status: string;
   if (winner !== null && winner[0]) {
     status = `Winner: ${winner[0]}`;

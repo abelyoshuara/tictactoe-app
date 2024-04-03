@@ -1,5 +1,5 @@
 interface HistoryProps {
-  moves: (string[] | null[])[];
+  moves: string[][];
   onJumpTo: (move: number) => void;
   currentMove: number;
   isDescOrdered: boolean;
