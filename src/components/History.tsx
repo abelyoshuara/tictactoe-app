@@ -12,13 +12,13 @@ export default function History({
   return (
     <ol className="mx-auto text-center">
       {moves.map((_squares, move) => {
-        let message: string = "";
-        if (move === currentMove) {
+        let message: string = `move #${move}`;
+        if (move === 0) {
+          message = `Go to game start`;
+        } else if (move === currentMove) {
           message = `You are at move #${move}`;
         } else if (move > 0) {
           message = `Go to move #${move}`;
-        } else {
-          message = `Go to game start`;
         }
 
         return (
