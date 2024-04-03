@@ -1,58 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import Board from "./components/Board";
 import History from "./components/History";
-import { Tictactoe } from "./types/Tictactoe";
+import { initialTictactoe, tictactoeReducer } from "./reducers/tictactoe";
 
 function App() {
-  const [tictactoe, setTictactoe] = useState<Tictactoe>({
-    history: [Array(9).fill(null)],
-    currentSquares: Array(9).fill(null),
-    currentMove: 0,
-    isDescOrdered: false,
-  });
+  const [tictactoe, dispatch] = useReducer(tictactoeReducer, initialTictactoe);
 
   const xIsNext: boolean = tictactoe.currentMove % 2 === 0;
 
-  function handlePlay(nextSquares: string[]) {
-    const nextHistory = [
-      ...tictactoe.history.slice(0, tictactoe.currentMove + 1),
-      nextSquares,
-    ];
-
-    setTictactoe((prevState) => ({
-      ...prevState,
-      history: nextHistory,
-      currentMove: nextHistory.length - 1,
-      currentSquares: nextSquares,
-    }));
-
-    localStorage.setItem("history", JSON.stringify(nextHistory));
-  }
-
-  function handleJumpTo(nextMove: number) {
-    setTictactoe((prevState) => ({
-      ...prevState,
-      currentMove: nextMove,
-      currentSquares: prevState.history[nextMove],
-    }));
-  }
-
-  function clear() {
-    setTictactoe({
-      history: [Array(9).fill(null)],
-      currentSquares: Array(9).fill(null),
-      currentMove: 0,
-      isDescOrdered: false,
+  const handlePlay = (nextSquares: string[]) => {
+    dispatch({
+      type: "PLAY",
+      payload: {
+        nextSquares,
+      },
     });
+  };
 
-    localStorage.removeItem("history");
-  }
+  const handleJumpTo = (nextMove: number) => {
+    dispatch({
+      type: "JUMP_TO",
+      payload: {
+        nextMove,
+      },
+    });
+  };
+
+  const clear = () => {
+    dispatch({ type: "CLEAR" });
+  };
 
   const handleSorting = () => {
-    setTictactoe((prevState) => ({
-      ...prevState,
-      isDescOrdered: !prevState.isDescOrdered,
-    }));
+    dispatch({ type: "SORT" });
   };
 
   useEffect(() => {
@@ -61,11 +40,12 @@ function App() {
         "[[null, null, null, null, null, null, null, null, null]]",
     );
 
-    setTictactoe((prevState) => ({
-      ...prevState,
-      history: savedHistory,
-      currentMove: savedHistory.length ? savedHistory.length - 1 : 0,
-    }));
+    dispatch({
+      type: "SYNCHRONIZE",
+      payload: {
+        savedHistory,
+      },
+    });
   }, []);
 
   return (
