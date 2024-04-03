@@ -10,9 +10,9 @@ export default function History({
   currentMove,
 }: HistoryProps) {
   return (
-    <ol className="mx-auto text-center">
+    <ol className="mx-auto w-96 text-center grid grid-cols-3 gap-1 mt-8">
       {moves.map((_squares, move) => {
-        let message: string = `move #${move}`;
+        let message = `Move #${move}`;
         if (move === 0) {
           message = `Go to game start`;
         } else if (move === currentMove) {
@@ -22,10 +22,12 @@ export default function History({
         }
 
         return (
-          <li key={move}>
+          <li key={move} className={`${move === 0 ? "col-span-3" : ""}`}>
             <button
               type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className={`text-white bg-blue-${
+                move === currentMove ? 800 : 700
+              } hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`}
               onClick={() => onJumpTo(move)}
             >
               {message}
