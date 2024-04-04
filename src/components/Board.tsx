@@ -32,9 +32,11 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
   }
 
   return (
-    <>
+    <div data-testid="board">
       <div>
-        <p className="text-center">{status}</p>
+        <p className="text-center" data-testid="status-game">
+          {status}
+        </p>
       </div>
       <div className="border-collapse flex flex-col">
         {[...Array(3)].map((_row, i) => (
@@ -50,6 +52,6 @@ export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

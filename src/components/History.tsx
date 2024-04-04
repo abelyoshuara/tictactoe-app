@@ -43,7 +43,10 @@ export default function History({
   }
 
   return (
-    <ol className="mx-auto w-96 text-center grid grid-cols-3 gap-1 mt-8">
+    <ol
+      className="mx-auto w-96 text-center grid grid-cols-3 gap-1 mt-8"
+      data-testid="history"
+    >
       {elements}
     </ol>
   );
