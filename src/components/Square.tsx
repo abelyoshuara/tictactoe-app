@@ -15,6 +15,7 @@ export default function Square({
         isWinner ? "bg-green-100" : ""
       }`}
       onClick={onSquareClick}
+      data-testid="square"
     >
       {value}
     </button>
