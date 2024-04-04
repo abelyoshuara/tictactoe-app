@@ -4,6 +4,8 @@
  * - App component
  *   - should renders correctly
  *   - should clear history when user click the clear button
+ *   - should display x when square button is clicked and xIsNext is true
+ *   - should display 0 when square button is clicked and xIsNext is false
  */
 
 import App from "./App";
@@ -47,5 +49,24 @@ describe("App component", () => {
     await userEvent.click(buttonClear);
 
     expect(null).toEqual(localStorage.getItem("history"));
+  });
+
+  it("should display x when square button is clicked and xIsNext is true", async () => {
+    render(<App />);
+
+    const squares = screen.getAllByTestId("square");
+    await userEvent.click(squares[0]);
+
+    expect(squares[0]).toHaveTextContent("x");
+  });
+
+  it("should display 0 when square button is clicked and xIsNext is false", async () => {
+    render(<App />);
+
+    const squares = screen.getAllByTestId("square");
+    await userEvent.click(squares[0]);
+    await userEvent.click(squares[1]);
+
+    expect(squares[1]).toHaveTextContent("0");
   });
 });
