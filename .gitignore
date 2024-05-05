@@ -26,3 +26,5 @@ dist-ssr
 
 # Contentlayer
 .contentlayer
+
+package-lock.json
